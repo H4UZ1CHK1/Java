@@ -1,9 +1,7 @@
-abstract class Bird {
-    String name;
+public interface Bird {
 
-    public Bird(String name) {
-        this.name = name;
-    }
+     static String name = "";
 
-    abstract void fly();
+    void fly();
 }
+
