@@ -1,27 +1,35 @@
-import java.util.*;
-
 public class Main {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        try {
+            Company company = new Company("Example LLC");
+            Department it = new Department("IT Department");
+            company.addDepartment(it);
 
-        while (true) {
-            System.out.println("Выберите задание:");
-            System.out.println("1 — Задание 1 ");
-            System.out.println("2 — Задание 2 ");
-            System.out.println("3 — Задание 3 ");
-            System.out.println("0 — Выход");
+            StaffEmployee ivan = new StaffEmployee("Ivan Ivanov", "Developer", 2000, 500);
+            ContractEmployee petr = new ContractEmployee("Petr Petrov", "QA", 1800);
+            it.addEmployee(ivan);
+            it.addEmployee(petr);
 
-            String input = sc.nextLine().trim();
-            switch (input) {
-                case "1": ex1.run();
-                break;
-                case "2": ex2.run();
-                break;
-                case "3": ex3.run();
-                break;
-                case "0": System.out.println("Выход из программы."); return;
-                default: System.out.println("Некорректный выбор.\n");
+            System.out.println("Ivan salary (staff): " + ivan.calculateSalary());
+            System.out.println("Petr salary (contract): " + petr.calculateSalary());
+
+            StaffEmployee egor = new StaffEmployee("Egor Egorov", "Analyst", 2200, -300);
+            System.out.println("Egor salary (staff, negative bonus): " + egor.calculateSalary());
+
+            try {
+                Employee bad = new ContractEmployee("Zero Guy", "Trainee", -100);
+                System.out.println("Trainee salary: " + bad.calculateSalary());
+            } catch (SalaryException se) {
+                System.err.println("Cannot create employee – negative base salary: " + se.getBadSalary());
+                throw se;
             }
+
+        } catch (SalaryException seOuter) {
+            System.out.println("Outer handling of SalaryException: " + seOuter.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
         }
+
+        System.out.println("Program finished.");
     }
 }
